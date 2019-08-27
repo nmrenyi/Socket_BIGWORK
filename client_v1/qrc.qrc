@@ -13,5 +13,6 @@
         <file>Pic/white_pawn.png</file>
         <file>Pic/white_queen.png</file>
         <file>Pic/white_rook.png</file>
+        <file>aa.bmp</file>
     </qresource>
 </RCC>

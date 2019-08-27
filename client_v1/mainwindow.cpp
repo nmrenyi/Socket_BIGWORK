@@ -49,8 +49,8 @@ void MainWindow::paintEvent(QPaintEvent * e) {
     const int line = 8;
 
     // 画棋盘
-    QPainter* painter = new QPainter(this);
-    painter->setPen(Qt::NoPen);
+    QPainter painter(this);
+    painter.setPen(Qt::NoPen);
     QColor whiteBlock(248,246,231);
     QColor brownBlock(195,176,145);
     QBrush whiteBrush(whiteBlock, Qt::SolidPattern);
@@ -59,24 +59,26 @@ void MainWindow::paintEvent(QPaintEvent * e) {
         for (int j = 0; j < line; j++) {
             if (i % 2 == 0) {
                 if (j % 2 == 0) {
-                    painter->setBrush(whiteBrush);
+                    painter.setBrush(whiteBrush);
                 } else {
-                    painter->setBrush(blackBrush);
+                    painter.setBrush(blackBrush);
                 }
-                painter->drawRect(startx + j * interval, starty + i * interval, interval, interval);
+                painter.drawRect(startx + j * interval, starty + i * interval, interval, interval);
             } else {
                 if (j % 2 == 1) {
-                    painter->setBrush(whiteBrush);
+                    painter.setBrush(whiteBrush);
                 } else {
-                    painter->setBrush(blackBrush);
+                    painter.setBrush(blackBrush);
                 }
-                painter->drawRect(startx + j * interval, starty + i * interval, interval, interval);
+                painter.drawRect(startx + j * interval, starty + i * interval, interval, interval);
             }
         }
     }
+//    qDebug() << "board drawed";
 
 
     if (fileRead) {
+//        qDebug() << "file read";
         for (int letter = 1; letter <= row; letter++) {
             for (int number = 1; number <= line; number++) {
                 if (board.askPiece(letter, number)) {
@@ -84,35 +86,40 @@ void MainWindow::paintEvent(QPaintEvent * e) {
                     int x = now.first;
                     int y = now.second;
                     Piece piece = board.askForPiece(letter, number);
-                    QBrush nowBrush(Qt::black, Qt::SolidPattern);
+//                    QPixmap tmp;
+//                    tmp.load((":/Pic/black_bishop.png"));
+//                    painter.drawPixmap(startx, starty, interval, interval, tmp);
+//                    QBrush nowBrush(Qt::black, Qt::SolidPattern);
+//                    painter.setBrush(nowBrush);
+//                    painter.setBackground(Qt::OpaqueMode);
                     if (piece.white) {
                         if (piece.name == "bishop")
-                            painter->drawPixmap(startx + interval * y, starty + interval * x, interval, interval, white_bishop);
+                            painter.drawPixmap(startx + interval * y, starty + interval * x, interval, interval, white_bishop);
                         else if (piece.name == "king")
-                            painter->drawPixmap(startx + interval * y, starty + interval * x, interval, interval, white_king);
+                            painter.drawPixmap(startx + interval * y, starty + interval * x, interval, interval, white_king);
                         else if (piece.name == "knight")
-                            painter->drawPixmap(startx + interval * y, starty + interval * x, interval, interval, white_knight);
+                            painter.drawPixmap(startx + interval * y, starty + interval * x, interval, interval, white_knight);
                         else if (piece.name == "queen")
-                            painter->drawPixmap(startx + interval * y, starty + interval * x, interval, interval, white_queen);
+                            painter.drawPixmap(startx + interval * y, starty + interval * x, interval, interval, white_queen);
                         else if (piece.name == "pawn")
-                            painter->drawPixmap(startx + interval * y, starty + interval * x, interval, interval, white_pawn);
+                            painter.drawPixmap(startx + interval * y, starty + interval * x, interval, interval, white_pawn);
                         else if (piece.name == "rook")
-                            painter->drawPixmap(startx + interval * y, starty + interval * x, interval, interval, white_rook);
+                            painter.drawPixmap(startx + interval * y, starty + interval * x, interval, interval, white_rook);
                         else
                             qDebug() << "invalid piece name";
                     } else {
                         if (piece.name == "bishop")
-                            painter->drawPixmap(startx + interval * y, starty + interval * x, interval, interval, black_bishop);
+                            painter.drawPixmap(startx + interval * y, starty + interval * x, interval, interval, black_bishop);
                         else if (piece.name == "king")
-                            painter->drawPixmap(startx + interval * y, starty + interval * x, interval, interval, black_king);
+                            painter.drawPixmap(startx + interval * y, starty + interval * x, interval, interval, black_king);
                         else if (piece.name == "knight")
-                            painter->drawPixmap(startx + interval * y, starty + interval * x, interval, interval, black_knight);
+                            painter.drawPixmap(startx + interval * y, starty + interval * x, interval, interval, black_knight);
                         else if (piece.name == "queen")
-                            painter->drawPixmap(startx + interval * y, starty + interval * x, interval, interval, black_queen);
+                            painter.drawPixmap(startx + interval * y, starty + interval * x, interval, interval, black_queen);
                         else if (piece.name == "pawn")
-                            painter->drawPixmap(startx + interval * y, starty + interval * x, interval, interval, black_pawn);
+                            painter.drawPixmap(startx + interval * y, starty + interval * x, interval, interval, black_pawn);
                         else if (piece.name == "rook")
-                            painter->drawPixmap(startx + interval * y, starty + interval * x, interval, interval, black_rook);
+                            painter.drawPixmap(startx + interval * y, starty + interval * x, interval, interval, black_rook);
                         else
                             qDebug() << "invalid piece name";
                     }
@@ -131,30 +138,27 @@ void MainWindow::on_actionReadFile_triggered()
 //    QFile file(fileName);
     if (file.open(QFile::ReadOnly)) {
         QTextStream in(&file);
+        bool white = true;
         while(!in.atEnd()) {
             QString s = in.readLine();
-            qDebug()<<s;
-            bool white = true;
             if (s == "black")
                 white = false;
             else if (s == "white")
                 white = true;
             else {
-                qDebug() << s;
+//                qDebug() << s;
                 std::string line = s.toStdString();
                 std::stringstream ss;
                 std::string name;
                 std::string num;
                 ss << line;
                 ss >> name;
-                qDebug() << "name ==" << QString::fromStdString(name);
                 ss >> num;
-                qDebug() << "num = " << QString::fromStdString(num) << "!!!!!!!!!!!!!!!!!!!";
                 int number = std::stoi(num);
                 for (int i = 0; i < number; i++) {
                     std::string tmp;
                     ss >> tmp;
-                    qDebug() << int(tmp[0] - 65) << " " << int(tmp[1]);
+//                    qDebug() << int(tmp[0] - 65) << " " << int(tmp[1]);
                     board.setPiece(name, white, int(tmp[0] - 96), int(tmp[1] - 48));
                 }
             }
