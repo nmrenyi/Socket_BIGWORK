@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>sample_input.txt</file>
+        <file>Pic/black_bishop.png</file>
+        <file>Pic/black_king.png</file>
+        <file>Pic/black_knight.png</file>
+        <file>Pic/black_pawn.png</file>
+        <file>Pic/black_queen.png</file>
+        <file>Pic/black_rook.png</file>
+        <file>Pic/white_bishop.png</file>
+        <file>Pic/white_king.png</file>
+        <file>Pic/white_knight.png</file>
+        <file>Pic/white_pawn.png</file>
+        <file>Pic/white_queen.png</file>
+        <file>Pic/white_rook.png</file>
+    </qresource>
+</RCC>
