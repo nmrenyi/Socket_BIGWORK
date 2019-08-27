@@ -7,6 +7,7 @@ class Piece
 {
 public:
     Piece();
+    Piece(bool, std::string);
     bool white;
     std::string name;
     bool pawnFirstStep;

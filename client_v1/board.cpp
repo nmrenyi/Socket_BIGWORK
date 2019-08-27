@@ -37,7 +37,17 @@ void Board::initOkToMove() {
             okToMove[i][j] = false;
     }
 }
+bool Board::readyForPromotion(bool white, int letter, int number) {
+    int edge = -1;
+    if (white)
+        edge = 8;
+    else
+        edge = 1;
+    if (number == edge)
+        return true;
+    return false;
 
+}
 void Board::setOkToMove(int letter, int number) {
     Piece now = status[letter][number];
     // 兵升变
@@ -50,17 +60,17 @@ void Board::setOkToMove(int letter, int number) {
             ONE = -1;
             TWO = -2;
         }
-        qDebug() << "it is pawn";
+//        qDebug() << "it is pawn";
         if (now.pawnFirstStep) {
-            qDebug() << "its first step";
+//            qDebug() << "its first step";
             if (checkInBoard(letter, number + ONE) && withPiece[letter][number + ONE]) {
-                qDebug() << "none ok";
+//                qDebug() << "none ok";
             } else if (checkInBoard(letter, number + TWO) && withPiece[letter][number + TWO]) {
                 qDebug() << QString::fromStdString(askForPiece(letter, number + TWO).name);
-                qDebug() << "ONE ok";
+//                qDebug() << "ONE ok";
                 okToMove[letter][number + ONE] = true;
             } else {
-                qDebug() << "TWO ok" << letter << number + ONE;
+//                qDebug() << "TWO ok" << letter << number + ONE;
                 if (checkInBoard(letter, number + ONE))
                     okToMove[letter][number + ONE] = true;
                 if (checkInBoard(letter, number + TWO))
@@ -72,8 +82,8 @@ void Board::setOkToMove(int letter, int number) {
             }
         }
 
-        qDebug()  << "ok zuoshang" << checkInBoard(letter - ONE, number + ONE) << withPiece[letter - ONE][number + ONE];
-        qDebug() << "ok youshang" << checkInBoard(letter + ONE, number + ONE) << withPiece[letter + ONE][number + ONE];
+//        qDebug()  << "ok zuoshang" << checkInBoard(letter - ONE, number + ONE) << withPiece[letter - ONE][number + ONE];
+//        qDebug() << "ok youshang" << checkInBoard(letter + ONE, number + ONE) << withPiece[letter + ONE][number + ONE];
         if (!checkAlly(status[letter][number], status[letter + ONE][number + ONE]) && checkInBoard(letter + ONE, number + ONE) && withPiece[letter + ONE][number + ONE])
             okToMove[letter + ONE][number + ONE] = true;
         if (!checkAlly(status[letter][number], status[letter - ONE][number + ONE]) && checkInBoard(letter - ONE, number + ONE) && withPiece[letter - ONE][number + ONE])

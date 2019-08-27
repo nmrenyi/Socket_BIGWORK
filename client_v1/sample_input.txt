@@ -1,4 +1,5 @@
 white
+pawn 1 f7
 king 1 h1
 queen 1 g3
 rook 2 g1 f5

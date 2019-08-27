@@ -26,16 +26,19 @@ CONFIG += c++11
 
 SOURCES += \
         board.cpp \
+        dialog.cpp \
         main.cpp \
         mainwindow.cpp \
         piece.cpp
 
 HEADERS += \
         board.h \
+        dialog.h \
         mainwindow.h \
         piece.h
 
 FORMS += \
+        dialog.ui \
         mainwindow.ui
 
 # Default rules for deployment.

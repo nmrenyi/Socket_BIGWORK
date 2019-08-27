@@ -9,6 +9,10 @@
 #include <QMouseEvent>
 #include <string>
 #include "piece.h"
+#include "dialog.h"
+#include <QRadioButton>
+#include <QSignalMapper>
+#include "ui_dialog.h"
 
 
 
@@ -18,7 +22,6 @@ MainWindow::MainWindow(QWidget *parent) :
     fileRead(false)
 {
     ui->setupUi(this);
-
     black_bishop.load(":/Pic/black_bishop.png");
     black_king.load(":/Pic/black_king.png");
     black_pawn.load(":/Pic/black_pawn.png");
@@ -188,43 +191,59 @@ void MainWindow::on_actionReadFile_triggered()
     }
 }
 
-void MainWindow::mousePressEvent(QMouseEvent *e) {
-    if (e->button() == Qt::LeftButton) {
 
-        qDebug() << "get left button";
+void MainWindow::setIt(int i) {
+    this->choice = i;
+    int letter = board.nowSelect.first;
+    int number = board.nowSelect.second;
+    if (choice == 0) {
+        board.status[letter][number].name = "queen";
+        this->update();
+    } else if (choice == 1) {
+        Piece tmp = board.status[letter][number];
+        board.status[letter][number] = Piece(tmp.white, "rook");
+        this->update();
+    } else if (choice == 2) {
+        Piece tmp = board.status[letter][number];
+        board.status[letter][number] = Piece(tmp.white, "bishop");
+        this->update();
+    } else if (choice == 3) {
+        Piece tmp = board.status[letter][number];
+        board.status[letter][number] = Piece(tmp.white, "knight");
+        this->update();
+    } else {
+        qDebug() << " you haven't choose the promotion choice = " << choice;
+    }
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *e) {
+    qDebug() << "in event choice = " << choice;
+    qDebug() << "your name please" << QString::fromStdString(board.status[6][1].name);
+    if (e->button() == Qt::LeftButton) {
         int x = (e->y() - starty ) / interval;
         int y = (e->x() - startx ) / interval;
-
         int letter = y + 1;
         int number = 8 - x;
-        qDebug() << "click on " << x << " " << y << " ok? " << board.okToMove[letter][number];
-//        bool flag = false;
-//        for (int i = 1; i <= 8; i++) {
-//            for (int j = 1; j <= 8; j++) {
-//                if (board.okToMove[i][j])
-//                {
-//                    qDebug() << "here is " << 8 - i << " " << j + 1;
-//                    flag = true;
-//                    break;
-//                }
-//            }
-//        }
-//        if (!flag)
-//            qDebug() << "nothing";
         if (board.holding) {
             if (letter == board.nowSelect.first && number == board.nowSelect.second) {
                 board.holding = false;
                 board.initOkToMove();
                 this->update();
             } else if (board.okToMove[letter][number]) {
-//                qDebug() << "eating this";
                 board.withPiece[letter][number] = true;
                 board.withPiece[board.nowSelect.first][board.nowSelect.second] = false;
                 board.status[letter][number] = board.status[board.nowSelect.first][board.nowSelect.second];
                 board.holding = false;
+                board.nowSelect = std::make_pair(letter, number);
                 if (board.status[letter][number].name == "pawn")
                     board.status[letter][number].pawnFirstStep = false;
                 board.initOkToMove();
+
+                if (board.status[letter][number].name == "pawn" && board.readyForPromotion(board.status[letter][number].white, letter, number)) {
+                    Dialog* dialog = new Dialog;
+                    connect(dialog, SIGNAL(selected(int)), this, SLOT(setIt(int)));
+                    dialog->show();
+                }
                 this->update();
             } else {
                 board.holding = false;
@@ -239,30 +258,5 @@ void MainWindow::mousePressEvent(QMouseEvent *e) {
                 this->update();
             }
         }
-
-
-//        if (board.askPiece(letter, number)) {
-//            qDebug() << "there is piece";
-//            if (board.holding && letter == board.nowSelect.first && number == board.nowSelect.second) {
-//                board.holding = false;
-//                board.initOkToMove();
-//                this->update();
-//            } else {
-//                board.holding = true;
-//                board.nowSelect = std::make_pair(letter, number);
-//                board.setOkToMove(letter, number);
-//                this->update();
-//            }
-////            Piece nowPiece = board.askForPiece(letter, number);
-//        } else {
-//            board.holding = false;
-//            board.initOkToMove();
-//            this->update();
-//        }
-//    } else {
-//        board.holding = false;
-//        board.initOkToMove();
-//        this->update();
-//    }
     }
 }

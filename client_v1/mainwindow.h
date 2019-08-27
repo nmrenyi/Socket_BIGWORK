@@ -23,9 +23,11 @@ public:
     ~MainWindow();
     void paintEvent(QPaintEvent*);
     void mousePressEvent(QMouseEvent*);
+                        int choice = -1;
 
 private slots:
     void on_actionReadFile_triggered();
+    void setIt(int);
 
 private:
     Ui::MainWindow *ui;
