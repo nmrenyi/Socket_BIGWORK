@@ -9,6 +9,7 @@ public:
     Piece();
     bool white;
     std::string name;
+    bool pawnFirstStep;
 };
 
 #endif // PIECE_H

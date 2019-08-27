@@ -22,6 +22,7 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void paintEvent(QPaintEvent*);
+    void mousePressEvent(QMouseEvent*);
 
 private slots:
     void on_actionReadFile_triggered();

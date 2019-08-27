@@ -6,6 +6,7 @@
 #include <QFileDialog>
 #include <iostream>
 #include <sstream>
+#include <QMouseEvent>
 #include <string>
 #include "piece.h"
 
@@ -18,13 +19,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    black_bishop.load("/Pic/black_bishop.png");
+    black_bishop.load(":/Pic/black_bishop.png");
     black_king.load(":/Pic/black_king.png");
     black_pawn.load(":/Pic/black_pawn.png");
     black_rook.load(":/Pic/black_rook.png");
     black_queen.load(":/Pic/black_queen.png");
     black_knight.load(":/Pic/black_knight.png");
-    white_bishop.load("/Pic/white_bishop.png");
+    white_bishop.load(":/Pic/white_bishop.png");
     white_king.load(":/Pic/white_king.png");
     white_pawn.load(":/Pic/white_pawn.png");
     white_rook.load(":/Pic/white_rook.png");
@@ -86,12 +87,6 @@ void MainWindow::paintEvent(QPaintEvent * e) {
                     int x = now.first;
                     int y = now.second;
                     Piece piece = board.askForPiece(letter, number);
-//                    QPixmap tmp;
-//                    tmp.load((":/Pic/black_bishop.png"));
-//                    painter.drawPixmap(startx, starty, interval, interval, tmp);
-//                    QBrush nowBrush(Qt::black, Qt::SolidPattern);
-//                    painter.setBrush(nowBrush);
-//                    painter.setBackground(Qt::OpaqueMode);
                     if (piece.white) {
                         if (piece.name == "bishop")
                             painter.drawPixmap(startx + interval * y, starty + interval * x, interval, interval, white_bishop);
@@ -127,8 +122,31 @@ void MainWindow::paintEvent(QPaintEvent * e) {
             }
         }
     }
-
-
+    if (board.holding) {
+        qDebug() << "it is holding";
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < line; j++) {
+                int letter = j + 1;
+                int number = 8 - i;
+//                qDebug() << letter << number;
+                if (board.okToMove[letter][number]) {
+                    qDebug() << "drawing " << i << " " << j << " " <<startx + j * interval <<" "<< starty + i + interval;
+                    QColor qc(Qt::green);
+                    qc.setAlpha(60);
+                    QBrush okBrush(qc, Qt::SolidPattern);
+                    painter.setBrush(okBrush);
+                    painter.drawRect(startx + j * interval, starty + i * interval, interval, interval);
+                }
+            }
+        }
+        QColor nowSelectColor(Qt::cyan);
+        nowSelectColor.setAlpha(60);
+        QBrush nowBrush(nowSelectColor, Qt::SolidPattern);
+        painter.setBrush(nowBrush);
+        int x = 8 - board.nowSelect.second;
+        int y = board.nowSelect.first - 1;
+        painter.drawRect(startx + y * interval, starty + x * interval, interval, interval);
+    }
 }
 
 void MainWindow::on_actionReadFile_triggered()
@@ -167,5 +185,84 @@ void MainWindow::on_actionReadFile_triggered()
         this->update();
     } else {
             qDebug()<<"file open failed";
+    }
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *e) {
+    if (e->button() == Qt::LeftButton) {
+
+        qDebug() << "get left button";
+        int x = (e->y() - starty ) / interval;
+        int y = (e->x() - startx ) / interval;
+
+        int letter = y + 1;
+        int number = 8 - x;
+        qDebug() << "click on " << x << " " << y << " ok? " << board.okToMove[letter][number];
+//        bool flag = false;
+//        for (int i = 1; i <= 8; i++) {
+//            for (int j = 1; j <= 8; j++) {
+//                if (board.okToMove[i][j])
+//                {
+//                    qDebug() << "here is " << 8 - i << " " << j + 1;
+//                    flag = true;
+//                    break;
+//                }
+//            }
+//        }
+//        if (!flag)
+//            qDebug() << "nothing";
+        if (board.holding) {
+            if (letter == board.nowSelect.first && number == board.nowSelect.second) {
+                board.holding = false;
+                board.initOkToMove();
+                this->update();
+            } else if (board.okToMove[letter][number]) {
+//                qDebug() << "eating this";
+                board.withPiece[letter][number] = true;
+                board.withPiece[board.nowSelect.first][board.nowSelect.second] = false;
+                board.status[letter][number] = board.status[board.nowSelect.first][board.nowSelect.second];
+                board.holding = false;
+                if (board.status[letter][number].name == "pawn")
+                    board.status[letter][number].pawnFirstStep = false;
+                board.initOkToMove();
+                this->update();
+            } else {
+                board.holding = false;
+                board.initOkToMove();
+                this->update();
+            }
+        } else {
+            if (board.askPiece(letter, number)) {
+                board.holding = true;
+                board.nowSelect = std::make_pair(letter, number);
+                board.setOkToMove(letter, number);
+                this->update();
+            }
+        }
+
+
+//        if (board.askPiece(letter, number)) {
+//            qDebug() << "there is piece";
+//            if (board.holding && letter == board.nowSelect.first && number == board.nowSelect.second) {
+//                board.holding = false;
+//                board.initOkToMove();
+//                this->update();
+//            } else {
+//                board.holding = true;
+//                board.nowSelect = std::make_pair(letter, number);
+//                board.setOkToMove(letter, number);
+//                this->update();
+//            }
+////            Piece nowPiece = board.askForPiece(letter, number);
+//        } else {
+//            board.holding = false;
+//            board.initOkToMove();
+//            this->update();
+//        }
+//    } else {
+//        board.holding = false;
+//        board.initOkToMove();
+//        this->update();
+//    }
     }
 }
