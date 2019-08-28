@@ -386,3 +386,9 @@ bool Board::checkAlly(Piece p1, Piece p2) {
         return true;
     return false;
 }
+
+void Board::initWithPiece() {
+    for (int i = 1 ; i <= 8; i++)
+        for (int j = 1; j <= 8; j++)
+            withPiece[i][j] = false;
+}

@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[5];
-    char stringdata0[70];
+    QByteArrayData data[19];
+    char stringdata0[278];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -33,14 +33,34 @@ struct qt_meta_stringdata_MainWindow_t {
 static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_MainWindow = {
     {
 QT_MOC_LITERAL(0, 0, 10), // "MainWindow"
-QT_MOC_LITERAL(1, 11, 27), // "on_actionReadFile_triggered"
-QT_MOC_LITERAL(2, 39, 0), // ""
-QT_MOC_LITERAL(3, 40, 5), // "setIt"
-QT_MOC_LITERAL(4, 46, 23) // "on_actionSave_triggered"
+QT_MOC_LITERAL(1, 11, 11), // "connectRecv"
+QT_MOC_LITERAL(2, 23, 0), // ""
+QT_MOC_LITERAL(3, 24, 7), // "loseSig"
+QT_MOC_LITERAL(4, 32, 19), // "acceptNewConnection"
+QT_MOC_LITERAL(5, 52, 11), // "recvMessage"
+QT_MOC_LITERAL(6, 64, 27), // "on_actionReadFile_triggered"
+QT_MOC_LITERAL(7, 92, 5), // "setIt"
+QT_MOC_LITERAL(8, 98, 23), // "on_actionSave_triggered"
+QT_MOC_LITERAL(9, 122, 7), // "setInfo"
+QT_MOC_LITERAL(10, 130, 13), // "setClientInfo"
+QT_MOC_LITERAL(11, 144, 29), // "on_actionInitServer_triggered"
+QT_MOC_LITERAL(12, 174, 11), // "startListen"
+QT_MOC_LITERAL(13, 186, 34), // "on_actionConnectToServer_trig..."
+QT_MOC_LITERAL(14, 221, 10), // "stopListen"
+QT_MOC_LITERAL(15, 232, 26), // "on_actionNewGame_triggered"
+QT_MOC_LITERAL(16, 259, 5), // "minus"
+QT_MOC_LITERAL(17, 265, 7), // "timerUp"
+QT_MOC_LITERAL(18, 273, 4) // "LOSE"
 
     },
-    "MainWindow\0on_actionReadFile_triggered\0"
-    "\0setIt\0on_actionSave_triggered"
+    "MainWindow\0connectRecv\0\0loseSig\0"
+    "acceptNewConnection\0recvMessage\0"
+    "on_actionReadFile_triggered\0setIt\0"
+    "on_actionSave_triggered\0setInfo\0"
+    "setClientInfo\0on_actionInitServer_triggered\0"
+    "startListen\0on_actionConnectToServer_triggered\0"
+    "stopListen\0on_actionNewGame_triggered\0"
+    "minus\0timerUp\0LOSE"
 };
 #undef QT_MOC_LITERAL
 
@@ -50,22 +70,54 @@ static const uint qt_meta_data_MainWindow[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+      17,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       0,       // signalCount
+       2,       // signalCount
+
+ // signals: name, argc, parameters, tag, flags
+       1,    0,   99,    2, 0x06 /* Public */,
+       3,    1,  100,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   29,    2, 0x08 /* Private */,
-       3,    1,   30,    2, 0x08 /* Private */,
-       4,    0,   33,    2, 0x08 /* Private */,
+       4,    0,  103,    2, 0x08 /* Private */,
+       5,    0,  104,    2, 0x08 /* Private */,
+       6,    0,  105,    2, 0x08 /* Private */,
+       7,    1,  106,    2, 0x08 /* Private */,
+       8,    0,  109,    2, 0x08 /* Private */,
+       9,    2,  110,    2, 0x08 /* Private */,
+      10,    2,  115,    2, 0x08 /* Private */,
+      11,    0,  120,    2, 0x08 /* Private */,
+      12,    0,  121,    2, 0x08 /* Private */,
+      13,    0,  122,    2, 0x08 /* Private */,
+      14,    0,  123,    2, 0x08 /* Private */,
+      15,    0,  124,    2, 0x08 /* Private */,
+      16,    0,  125,    2, 0x08 /* Private */,
+      17,    0,  126,    2, 0x08 /* Private */,
+      18,    1,  127,    2, 0x08 /* Private */,
+
+ // signals: parameters
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::Bool,    2,
 
  // slots: parameters
     QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Void, QMetaType::Int,    2,
     QMetaType::Void,
+    QMetaType::Void, QMetaType::QString, QMetaType::QString,    2,    2,
+    QMetaType::Void, QMetaType::QString, QMetaType::QString,    2,    2,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::Bool,    2,
 
        0        // eod
 };
@@ -76,10 +128,40 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         auto *_t = static_cast<MainWindow *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->on_actionReadFile_triggered(); break;
-        case 1: _t->setIt((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 2: _t->on_actionSave_triggered(); break;
+        case 0: _t->connectRecv(); break;
+        case 1: _t->loseSig((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 2: _t->acceptNewConnection(); break;
+        case 3: _t->recvMessage(); break;
+        case 4: _t->on_actionReadFile_triggered(); break;
+        case 5: _t->setIt((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 6: _t->on_actionSave_triggered(); break;
+        case 7: _t->setInfo((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
+        case 8: _t->setClientInfo((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
+        case 9: _t->on_actionInitServer_triggered(); break;
+        case 10: _t->startListen(); break;
+        case 11: _t->on_actionConnectToServer_triggered(); break;
+        case 12: _t->stopListen(); break;
+        case 13: _t->on_actionNewGame_triggered(); break;
+        case 14: _t->minus(); break;
+        case 15: _t->timerUp(); break;
+        case 16: _t->LOSE((*reinterpret_cast< bool(*)>(_a[1]))); break;
         default: ;
+        }
+    } else if (_c == QMetaObject::IndexOfMethod) {
+        int *result = reinterpret_cast<int *>(_a[0]);
+        {
+            using _t = void (MainWindow::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&MainWindow::connectRecv)) {
+                *result = 0;
+                return;
+            }
+        }
+        {
+            using _t = void (MainWindow::*)(bool );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&MainWindow::loseSig)) {
+                *result = 1;
+                return;
+            }
         }
     }
 }
@@ -113,15 +195,28 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 17)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 17;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
+        if (_id < 17)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 3;
+        _id -= 17;
     }
     return _id;
+}
+
+// SIGNAL 0
+void MainWindow::connectRecv()
+{
+    QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
+}
+
+// SIGNAL 1
+void MainWindow::loseSig(bool _t1)
+{
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

@@ -6,7 +6,7 @@
 #include <QPainter>
 #include <QtNetwork>
 #include <QPixmap>
-
+#include <QTime>
 #include <piece.h>
 #include <board.h>
 
@@ -34,14 +34,34 @@ private slots:
     void on_actionReadFile_triggered();
     void setIt(int);
     void on_actionSave_triggered();
+    void setInfo(QString, QString);
+    void setClientInfo(QString, QString);
+    void on_actionInitServer_triggered();
+    void startListen();
+    void on_actionConnectToServer_triggered();
+    void stopListen();
+    void on_actionNewGame_triggered();
+    void minus();
+    void timerUp();
+    void LOSE(bool);
 
 private:
+    bool myID;
+    bool nowOn;
+    QTimer* timer;
+    QTimer* oneSec;
+    bool statusRead;
+    int nowTime;
     Ui::MainWindow *ui;
     QTcpServer* listenSocket;
     QTcpSocket* readWriteSocket;
     const int startx = 100;
     const int starty = 100;
     const int interval = 80;
+    QString clientHostIP;
+    QString serverHostIP;
+    QString clientPort;
+    QString serverPort;
     bool fileRead;
     QPixmap black_bishop;
     QPixmap black_king;
@@ -57,6 +77,13 @@ private:
     QPixmap white_rook;
     void saveToFile();
     QString getBoardInfo();
+    void sendStatus();
+    void readStatus(QString);
+    void readStatus(QFile&);
+    void resetWithPiece();
+signals:
+    void connectRecv();
+    void loseSig(bool);
 
 };
 

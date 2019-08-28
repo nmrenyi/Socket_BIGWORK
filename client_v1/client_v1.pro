@@ -27,20 +27,26 @@ CONFIG += c++11
 
 SOURCES += \
         board.cpp \
+        connectto.cpp \
         dialog.cpp \
         main.cpp \
         mainwindow.cpp \
-        piece.cpp
+        piece.cpp \
+        serverset.cpp
 
 HEADERS += \
         board.h \
+        connectto.h \
         dialog.h \
         mainwindow.h \
-        piece.h
+        piece.h \
+        serverset.h
 
 FORMS += \
+        connectto.ui \
         dialog.ui \
-        mainwindow.ui
+        mainwindow.ui \
+        serverset.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

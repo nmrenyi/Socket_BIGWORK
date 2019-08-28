@@ -21,6 +21,7 @@ public:
     Piece status[10][10];
     bool withPiece[10][10];
     bool readyForPromotion(bool ,int , int);
+    void initWithPiece();
 private:
     bool checkInBoard(int, int);
     bool checkAlly(Piece, Piece);

@@ -6,23 +6,55 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>700</width>
-    <height>700</height>
+    <width>854</width>
+    <height>747</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QLCDNumber" name="lcd">
+    <property name="geometry">
+     <rect>
+      <x>740</x>
+      <y>50</y>
+      <width>101</width>
+      <height>91</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>740</x>
+      <y>170</y>
+      <width>81</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+  </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>700</width>
+     <width>854</width>
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuStart">
+    <property name="title">
+     <string>Start</string>
+    </property>
+    <addaction name="actionInitServer"/>
+    <addaction name="actionConnectToServer"/>
+   </widget>
+   <addaction name="menuStart"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -31,6 +63,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionNewGame"/>
    <addaction name="actionReadFile"/>
    <addaction name="actionSave"/>
   </widget>
@@ -46,6 +79,21 @@
   <action name="actionSave">
    <property name="text">
     <string>Save</string>
+   </property>
+  </action>
+  <action name="actionInitServer">
+   <property name="text">
+    <string>InitServer</string>
+   </property>
+  </action>
+  <action name="actionConnectToServer">
+   <property name="text">
+    <string>ConnectToServer</string>
+   </property>
+  </action>
+  <action name="actionNewGame">
+   <property name="text">
+    <string>NewGame</string>
    </property>
   </action>
  </widget>
