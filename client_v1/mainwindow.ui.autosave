@@ -23,6 +23,14 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuStart">
+    <property name="title">
+     <string>Start</string>
+    </property>
+    <addaction name="actionInitServer"/>
+    <addaction name="actionConnectToServer"/>
+   </widget>
+   <addaction name="menuStart"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -46,6 +54,16 @@
   <action name="actionSave">
    <property name="text">
     <string>Save</string>
+   </property>
+  </action>
+  <action name="actionInitServer">
+   <property name="text">
+    <string>InitServer</string>
+   </property>
+  </action>
+  <action name="actionConnectToServer">
+   <property name="text">
+    <string>ConnectToServer</string>
    </property>
   </action>
  </widget>

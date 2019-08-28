@@ -15,44 +15,69 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QRadioButton>
+#include <QtWidgets/QVBoxLayout>
 
 QT_BEGIN_NAMESPACE
 
 class Ui_Dialog
 {
 public:
-    QDialogButtonBox *buttonBox;
+    QVBoxLayout *verticalLayout_3;
+    QVBoxLayout *verticalLayout_2;
     QGroupBox *groupBox;
+    QVBoxLayout *verticalLayout;
     QRadioButton *queen;
     QRadioButton *rook;
     QRadioButton *knight;
     QRadioButton *bishop;
+    QDialogButtonBox *buttonBox;
 
     void setupUi(QDialog *Dialog)
     {
         if (Dialog->objectName().isEmpty())
             Dialog->setObjectName(QString::fromUtf8("Dialog"));
-        Dialog->resize(400, 300);
-        buttonBox = new QDialogButtonBox(Dialog);
-        buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
-        buttonBox->setGeometry(QRect(30, 240, 341, 32));
-        buttonBox->setOrientation(Qt::Horizontal);
-        buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+        Dialog->resize(197, 286);
+        verticalLayout_3 = new QVBoxLayout(Dialog);
+        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
+        verticalLayout_2 = new QVBoxLayout();
+        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         groupBox = new QGroupBox(Dialog);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
-        groupBox->setGeometry(QRect(80, 70, 191, 111));
+        verticalLayout = new QVBoxLayout(groupBox);
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         queen = new QRadioButton(groupBox);
         queen->setObjectName(QString::fromUtf8("queen"));
-        queen->setGeometry(QRect(10, 20, 91, 18));
+
+        verticalLayout->addWidget(queen);
+
         rook = new QRadioButton(groupBox);
         rook->setObjectName(QString::fromUtf8("rook"));
-        rook->setGeometry(QRect(10, 40, 91, 18));
+
+        verticalLayout->addWidget(rook);
+
         knight = new QRadioButton(groupBox);
         knight->setObjectName(QString::fromUtf8("knight"));
-        knight->setGeometry(QRect(10, 60, 91, 18));
+
+        verticalLayout->addWidget(knight);
+
         bishop = new QRadioButton(groupBox);
         bishop->setObjectName(QString::fromUtf8("bishop"));
-        bishop->setGeometry(QRect(10, 80, 91, 18));
+
+        verticalLayout->addWidget(bishop);
+
+
+        verticalLayout_2->addWidget(groupBox);
+
+        buttonBox = new QDialogButtonBox(Dialog);
+        buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
+        buttonBox->setOrientation(Qt::Horizontal);
+        buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+
+        verticalLayout_2->addWidget(buttonBox);
+
+
+        verticalLayout_3->addLayout(verticalLayout_2);
+
 
         retranslateUi(Dialog);
         QObject::connect(buttonBox, SIGNAL(accepted()), Dialog, SLOT(accept()));
@@ -64,7 +89,7 @@ public:
     void retranslateUi(QDialog *Dialog)
     {
         Dialog->setWindowTitle(QCoreApplication::translate("Dialog", "Dialog", nullptr));
-        groupBox->setTitle(QCoreApplication::translate("Dialog", "Choose your promotion", nullptr));
+        groupBox->setTitle(QCoreApplication::translate("Dialog", "Promotion", nullptr));
         queen->setText(QCoreApplication::translate("Dialog", "Queen", nullptr));
         rook->setText(QCoreApplication::translate("Dialog", "Rook", nullptr));
         knight->setText(QCoreApplication::translate("Dialog", "Knight", nullptr));

@@ -24,6 +24,7 @@ class Ui_MainWindow
 {
 public:
     QAction *actionReadFile;
+    QAction *actionSave;
     QWidget *centralWidget;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
@@ -36,6 +37,8 @@ public:
         MainWindow->resize(700, 700);
         actionReadFile = new QAction(MainWindow);
         actionReadFile->setObjectName(QString::fromUtf8("actionReadFile"));
+        actionSave = new QAction(MainWindow);
+        actionSave->setObjectName(QString::fromUtf8("actionSave"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         MainWindow->setCentralWidget(centralWidget);
@@ -51,6 +54,7 @@ public:
         MainWindow->setStatusBar(statusBar);
 
         mainToolBar->addAction(actionReadFile);
+        mainToolBar->addAction(actionSave);
 
         retranslateUi(MainWindow);
 
@@ -64,6 +68,7 @@ public:
 #if QT_CONFIG(shortcut)
         actionReadFile->setShortcut(QCoreApplication::translate("MainWindow", "Ctrl+F", nullptr));
 #endif // QT_CONFIG(shortcut)
+        actionSave->setText(QCoreApplication::translate("MainWindow", "Save", nullptr));
     } // retranslateUi
 
 };

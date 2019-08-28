@@ -237,6 +237,7 @@ Makefile: ../client_v1/client_v1.pro D:/Programs/Qt/5.13.0/mingw73_64/mkspecs/wi
 		../client_v1/client_v1.pro \
 		D:/Programs/Qt/5.13.0/mingw73_64/lib/Qt5Widgets.prl \
 		D:/Programs/Qt/5.13.0/mingw73_64/lib/Qt5Gui.prl \
+		D:/Programs/Qt/5.13.0/mingw73_64/lib/Qt5Network.prl \
 		D:/Programs/Qt/5.13.0/mingw73_64/lib/Qt5Core.prl \
 		D:/Programs/Qt/5.13.0/mingw73_64/lib/qtmain.prl
 	$(QMAKE) -o Makefile ..\client_v1\client_v1.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
@@ -414,6 +415,7 @@ D:/Programs/Qt/5.13.0/mingw73_64/mkspecs/features/lex.prf:
 ../client_v1/client_v1.pro:
 D:/Programs/Qt/5.13.0/mingw73_64/lib/Qt5Widgets.prl:
 D:/Programs/Qt/5.13.0/mingw73_64/lib/Qt5Gui.prl:
+D:/Programs/Qt/5.13.0/mingw73_64/lib/Qt5Network.prl:
 D:/Programs/Qt/5.13.0/mingw73_64/lib/Qt5Core.prl:
 D:/Programs/Qt/5.13.0/mingw73_64/lib/qtmain.prl:
 qmake: FORCE

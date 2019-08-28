@@ -9,12 +9,14 @@
 #include <QMouseEvent>
 #include <string>
 #include "piece.h"
+#include <QFile>
+#include <QFileDialog>
 #include "dialog.h"
+#include <QtNetwork>
+#include <QMessageBox>
 #include <QRadioButton>
 #include <QSignalMapper>
 #include "ui_dialog.h"
-
-
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -159,6 +161,7 @@ void MainWindow::on_actionReadFile_triggered()
 //    QFile file(fileName);
     if (file.open(QFile::ReadOnly)) {
         QTextStream in(&file);
+//        qDebug() << in.readAll();
         bool white = true;
         while(!in.atEnd()) {
             QString s = in.readLine();
@@ -259,4 +262,84 @@ void MainWindow::mousePressEvent(QMouseEvent *e) {
             }
         }
     }
+}
+
+
+void MainWindow::saveToFile() {
+    QString fileName = QFileDialog::getSaveFileName(nullptr,tr("Save File"),"../filename","Text files (*.txt)");
+    qDebug() <<fileName;
+    QFile file(fileName);
+    if(!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QMessageBox::warning(nullptr,tr("错误"),tr("打开文件失败"));
+        return;
+    } else {
+        QTextStream textStream(&file);
+        QString str = getBoardInfo();
+        textStream<<str;
+        file.close();
+    }
+}
+
+QString MainWindow::getBoardInfo() {
+    QString str;
+    str += "white\n";
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            int letter = j + 1;
+            int number = 8 - i;
+            if (board.status[letter][number].white && board.withPiece[letter][number]) {
+                str += QString::fromStdString(board.status[letter][number].name);
+                str += " 1 ";
+                str += char(letter + 96);
+                str += QString::fromStdString(std::to_string(number));
+                str += "\n";
+            }
+        }
+    }
+    str += "black\n";
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            int letter = j + 1;
+            int number = 8 - i;
+            if (!board.status[letter][number].white && board.withPiece[letter][number]) {
+                str += QString::fromStdString(board.status[letter][number].name);
+                str += " 1 ";
+                str += char(letter + 96);
+                str += QString::fromStdString(std::to_string(number));
+                str += "\n";
+            }
+        }
+    }
+    return str;
+}
+
+void MainWindow::initServer() {
+    listenSocket = new QTcpServer;
+    listenSocket->waitForNewConnection(-1);
+    listenSocket->listen(QHostAddress::Any, 8888);
+    connect(listenSocket, SIGNAL(newConnection()), this, SLOT(acceptNewConnection()));
+}
+
+void MainWindow::acceptNewConnection() {
+    QMessageBox::information(nullptr, "info", "new connection accepted");
+    readWriteSocket = listenSocket->nextPendingConnection();
+    connect(readWriteSocket, SIGNAL(readyRead()), this, SLOT(recvMessage()));
+}
+void MainWindow::connectHost() {
+    readWriteSocket = new QTcpSocket;
+    readWriteSocket->connectToHost(QHostAddress("183.173.99.42"),8888);
+    connect(this->readWriteSocket,SIGNAL(readyRead()),this,SLOT(recvMessage()));
+}
+
+void MainWindow::recvMessage() {
+    // TODO
+}
+void MainWindow::on_actionSave_triggered()
+{
+    saveToFile();
+}
+
+void MainWindow::on_actionInitServer_triggered()
+{
+
 }
