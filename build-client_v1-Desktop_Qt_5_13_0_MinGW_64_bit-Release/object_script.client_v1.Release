@@ -1,0 +1,12 @@
+release/board.o
+release/connectto.o
+release/dialog.o
+release/main.o
+release/mainwindow.o
+release/piece.o
+release/serverset.o
+release/qrc_qrc.o
+release/moc_connectto.o
+release/moc_dialog.o
+release/moc_mainwindow.o
+release/moc_serverset.o

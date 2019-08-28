@@ -42,16 +42,16 @@ private slots:
     void stopListen();
     void on_actionNewGame_triggered();
     void minus();
-    void timerUp();
+
     void LOSE(bool);
 
 private:
     bool myID;
     bool nowOn;
-    QTimer* timer;
-    QTimer* oneSec;
     bool statusRead;
     int nowTime;
+    const int timeLimit = 60;
+    QTimer* timer;
     Ui::MainWindow *ui;
     QTcpServer* listenSocket;
     QTcpSocket* readWriteSocket;
@@ -81,6 +81,7 @@ private:
     void readStatus(QString);
     void readStatus(QFile&);
     void resetWithPiece();
+    void checkKing();
 signals:
     void connectRecv();
     void loseSig(bool);

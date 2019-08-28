@@ -1,0 +1,12 @@
+debug/board.o
+debug/connectto.o
+debug/dialog.o
+debug/main.o
+debug/mainwindow.o
+debug/piece.o
+debug/serverset.o
+debug/qrc_qrc.o
+debug/moc_connectto.o
+debug/moc_dialog.o
+debug/moc_mainwindow.o
+debug/moc_serverset.o
