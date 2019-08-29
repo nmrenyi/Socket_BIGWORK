@@ -13,6 +13,7 @@ class ServerSet : public QDialog
     Q_OBJECT
 
 public:
+    Ui::ServerSet *ui;
     explicit ServerSet(QWidget *parent = nullptr);
     ~ServerSet();
 signals:
@@ -25,7 +26,7 @@ private slots:
     void on_buttonBox_rejected();
 
 private:
-    Ui::ServerSet *ui;
+
 };
 
 #endif // SERVERSET_H

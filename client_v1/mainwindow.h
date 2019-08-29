@@ -50,11 +50,13 @@ private:
     bool nowOn;
     bool statusRead;
     int nowTime;
+    bool gameStart;
     const int timeLimit = 60;
     QTimer* timer;
     Ui::MainWindow *ui;
     QTcpServer* listenSocket;
     QTcpSocket* readWriteSocket;
+    bool alreadyConnected;
     const int startx = 100;
     const int starty = 100;
     const int interval = 80;
@@ -85,6 +87,7 @@ private:
 signals:
     void connectRecv();
     void loseSig(bool);
+    void sendIP(QString);
 
 };
 

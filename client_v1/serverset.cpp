@@ -11,6 +11,8 @@ ServerSet::ServerSet(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->wait->setVisible(false);
+//    ui->hostIP->setText("127.0.0.1");
+    ui->port->setText("8888");
 }
 
 ServerSet::~ServerSet()

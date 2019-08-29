@@ -34,6 +34,7 @@ public:
     QWidget *centralWidget;
     QLCDNumber *lcd;
     QLabel *label;
+    QLabel *Your;
     QMenuBar *menuBar;
     QMenu *menuStart;
     QToolBar *mainToolBar;
@@ -43,7 +44,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(854, 747);
+        MainWindow->resize(893, 880);
         actionReadFile = new QAction(MainWindow);
         actionReadFile->setObjectName(QString::fromUtf8("actionReadFile"));
         actionSave = new QAction(MainWindow);
@@ -62,10 +63,13 @@ public:
         label = new QLabel(centralWidget);
         label->setObjectName(QString::fromUtf8("label"));
         label->setGeometry(QRect(740, 170, 81, 51));
+        Your = new QLabel(centralWidget);
+        Your->setObjectName(QString::fromUtf8("Your"));
+        Your->setGeometry(QRect(740, 240, 181, 81));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 854, 21));
+        menuBar->setGeometry(QRect(0, 0, 893, 21));
         menuStart = new QMenu(menuBar);
         menuStart->setObjectName(QString::fromUtf8("menuStart"));
         MainWindow->setMenuBar(menuBar);
@@ -82,6 +86,8 @@ public:
         mainToolBar->addAction(actionNewGame);
         mainToolBar->addAction(actionReadFile);
         mainToolBar->addAction(actionSave);
+        mainToolBar->addAction(actionInitServer);
+        mainToolBar->addAction(actionConnectToServer);
 
         retranslateUi(MainWindow);
 
@@ -100,6 +106,7 @@ public:
         actionConnectToServer->setText(QCoreApplication::translate("MainWindow", "ConnectToServer", nullptr));
         actionNewGame->setText(QCoreApplication::translate("MainWindow", "NewGame", nullptr));
         label->setText(QString());
+        Your->setText(QCoreApplication::translate("MainWindow", "Your Turn", nullptr));
         menuStart->setTitle(QCoreApplication::translate("MainWindow", "Start", nullptr));
     } // retranslateUi
 

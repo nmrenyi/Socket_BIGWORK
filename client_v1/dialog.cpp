@@ -3,7 +3,7 @@
 #include <QDebug>
 
 Dialog::Dialog(QWidget *parent) :
-    QDialog(parent),
+    QDialog(parent,Qt::WindowTitleHint | Qt::CustomizeWindowHint),
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
@@ -13,7 +13,7 @@ Dialog::~Dialog()
 {
     delete ui;
 }
-
+void Dialog::closeEvent(QCloseEvent *) {}
 
 void Dialog::on_buttonBox_accepted()
 {

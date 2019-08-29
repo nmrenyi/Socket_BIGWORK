@@ -82,6 +82,8 @@ public:
         mainToolBar->addAction(actionNewGame);
         mainToolBar->addAction(actionReadFile);
         mainToolBar->addAction(actionSave);
+        mainToolBar->addAction(actionInitServer);
+        mainToolBar->addAction(actionConnectToServer);
 
         retranslateUi(MainWindow);
 

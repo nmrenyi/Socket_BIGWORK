@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QFileDialog>
 #include <iostream>
+#include "ui_serverset.h"
 #include <sstream>
 #include <QMouseEvent>
 #include <string>
@@ -47,6 +48,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->lcd->display(timeLimit);
     timer = new QTimer;
     connect(timer, SIGNAL(timeout()), this, SLOT(minus()));
+    alreadyConnected = false;
+    ui->Your->setVisible(false);
 }
 
 void MainWindow::minus() {
@@ -62,7 +65,7 @@ void MainWindow::minus() {
 void MainWindow::LOSE(bool l) {
     QByteArray* arr = new QByteArray;
     arr->clear();
-
+    readWriteSocket->write(arr->data());
     if (l){
         arr->append("whitelose");
         QMessageBox::information(nullptr, "white lose, black win", "white lose, black win");
@@ -71,7 +74,7 @@ void MainWindow::LOSE(bool l) {
         arr->append("blacklose");
         QMessageBox::information(nullptr, "black lose, white win", "black lose, white win");
     }
-    readWriteSocket->write(arr->data());
+    timer->stop();
 }
 
 
@@ -190,6 +193,11 @@ void MainWindow::paintEvent(QPaintEvent * e) {
         int y = board.nowSelect.first - 1;
         painter.drawRect(startx + y * interval, starty + x * interval, interval, interval);
     }
+    if (nowOn == myID) {
+        ui->Your->setVisible(true);
+    } else {
+        ui->Your->setVisible(false);
+    }
 }
 
 void MainWindow::readStatus(QString qs) {
@@ -207,14 +215,26 @@ void MainWindow::readStatus(QString qs) {
             nowOn = true;
         else if (s == "false")
             nowOn = false;
+        else if (s == "recvConnect")
+        {
+            alreadyConnected = true;
+            QMessageBox::information(nullptr, "success", "Successfully connected to server!");
+        }
         else if (s == "newRound") {
             nowTime = timeLimit;
             board.initWithPiece();
         }
         else if (s == "whitelose")
+        {
+            timer->stop();
             QMessageBox::information(nullptr, "black win, white lose", "black win, white lose");
+
+        }
         else if (s == "blacklose")
+        {
+            timer->stop();
             QMessageBox::information(nullptr, "black win, white lose", "white win, black lose");
+        }
         else {
 //                qDebug() << s;
             std::string line = s.toStdString();
@@ -390,7 +410,7 @@ void MainWindow::saveToFile() {
     qDebug() <<fileName;
     QFile file(fileName);
     if(!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        QMessageBox::warning(nullptr,tr("错误"),tr("打开文件失败"));
+        QMessageBox::warning(nullptr,tr("错误"),tr("操作失败"));
         return;
     } else {
         QTextStream textStream(&file);
@@ -443,13 +463,16 @@ void MainWindow::initServer() {
 void MainWindow::acceptNewConnection() {
     emit(connectRecv());
     QMessageBox::information(nullptr, "info", "new connection accepted");
+    alreadyConnected = true;
     readWriteSocket = listenSocket->nextPendingConnection();
     connect(readWriteSocket, SIGNAL(readyRead()), this, SLOT(recvMessage()));
+    readWriteSocket->write("recvConnect");
 }
 
 void MainWindow::connectHost() {
     readWriteSocket = new QTcpSocket;
     readWriteSocket->connectToHost(QHostAddress(clientHostIP),quint16(clientPort.toInt()));
+    qDebug() << "peer = " << readWriteSocket->peerAddress();
     connect(this->readWriteSocket,SIGNAL(readyRead()),this,SLOT(recvMessage()));
 }
 void MainWindow::resetWithPiece() {
@@ -496,29 +519,61 @@ void MainWindow::startListen() {
 void MainWindow::stopListen() {
     listenSocket->close();
 }
-
+QString getHostIpAddress()
+{
+    QString strIpAddress;
+    QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
+    // 获取第一个本主机的IPv4地址
+    int nListSize = ipAddressesList.size();
+    for (int i = 0; i < nListSize; ++i)
+    {
+           if (ipAddressesList.at(i) != QHostAddress::LocalHost &&
+               ipAddressesList.at(i).toIPv4Address()) {
+               strIpAddress = ipAddressesList.at(i).toString();
+               break;
+           }
+     }
+     // 如果没有找到，则以本地IP地址为IP
+     if (strIpAddress.isEmpty())
+        strIpAddress = QHostAddress(QHostAddress::LocalHost).toString();
+     return strIpAddress;
+}
 void MainWindow::on_actionInitServer_triggered()
 {
     myID = true;
-    ui->label->setText("White");
+    ui->label->setText("You're White");
     ServerSet* dialog = new ServerSet;
+    dialog->ui->hostIP->setText(getHostIpAddress());
     connect(this, SIGNAL(connectRecv()), dialog, SLOT(received()));
     connect(dialog, SIGNAL(InfoChanged(QString, QString)), this, SLOT(setInfo(QString, QString)));
     connect(dialog, SIGNAL(okListen()), this, SLOT(startListen()));
     connect(dialog, SIGNAL(notListen()), this, SLOT(stopListen()));
+    qDebug() << "initing server";
+    qDebug() << "server IP = " << getHostIpAddress();
+//    connect(this, SIGNAL(sendIP(QString)), dialog, SLOT(setIP(QString)));
+//    QHostInfo info = QHostInfo::fromName(QHostInfo::localHostName());
+//    qDebug()<<"IP Address："<< info.addresses();
     dialog->show();
 }
 
 void MainWindow::on_actionConnectToServer_triggered()
 {
     myID = false;
-    ui->label->setText("Black");
+    ui->label->setText("You're Black");
     connectTo* dialog = new connectTo;
+
     connect(dialog, SIGNAL(InfoChanged(QString, QString)), this, SLOT(setClientInfo(QString, QString)));
+
+
+
     dialog->show();
 }
 void MainWindow::on_actionReadFile_triggered()
 {
+    if (!alreadyConnected) {
+        QMessageBox::information(nullptr, "Warning", "Please get connected first");
+        return;
+    }
     nowTime = timeLimit;
     readWriteSocket->write("newRound\n");
     board.initWithPiece();
@@ -539,6 +594,10 @@ void MainWindow::on_actionReadFile_triggered()
 }
 
 void MainWindow::on_actionNewGame_triggered() {
+    if (!alreadyConnected) {
+        QMessageBox::information(nullptr, "Warning", "Please get connected first");
+        return;
+    }
     nowTime = timeLimit;
     readWriteSocket->write("newRound\n");
     board.initWithPiece();
@@ -554,3 +613,6 @@ void MainWindow::on_actionNewGame_triggered() {
         qDebug()<<"file open failed";
     }
 }
+
+
+

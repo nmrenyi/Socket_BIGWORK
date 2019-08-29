@@ -23,7 +23,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
     QByteArrayData data[19];
-    char stringdata0[278];
+    char stringdata0[277];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -36,31 +36,31 @@ QT_MOC_LITERAL(0, 0, 10), // "MainWindow"
 QT_MOC_LITERAL(1, 11, 11), // "connectRecv"
 QT_MOC_LITERAL(2, 23, 0), // ""
 QT_MOC_LITERAL(3, 24, 7), // "loseSig"
-QT_MOC_LITERAL(4, 32, 19), // "acceptNewConnection"
-QT_MOC_LITERAL(5, 52, 11), // "recvMessage"
-QT_MOC_LITERAL(6, 64, 27), // "on_actionReadFile_triggered"
-QT_MOC_LITERAL(7, 92, 5), // "setIt"
-QT_MOC_LITERAL(8, 98, 23), // "on_actionSave_triggered"
-QT_MOC_LITERAL(9, 122, 7), // "setInfo"
-QT_MOC_LITERAL(10, 130, 13), // "setClientInfo"
-QT_MOC_LITERAL(11, 144, 29), // "on_actionInitServer_triggered"
-QT_MOC_LITERAL(12, 174, 11), // "startListen"
-QT_MOC_LITERAL(13, 186, 34), // "on_actionConnectToServer_trig..."
-QT_MOC_LITERAL(14, 221, 10), // "stopListen"
-QT_MOC_LITERAL(15, 232, 26), // "on_actionNewGame_triggered"
-QT_MOC_LITERAL(16, 259, 5), // "minus"
-QT_MOC_LITERAL(17, 265, 7), // "timerUp"
-QT_MOC_LITERAL(18, 273, 4) // "LOSE"
+QT_MOC_LITERAL(4, 32, 6), // "sendIP"
+QT_MOC_LITERAL(5, 39, 19), // "acceptNewConnection"
+QT_MOC_LITERAL(6, 59, 11), // "recvMessage"
+QT_MOC_LITERAL(7, 71, 27), // "on_actionReadFile_triggered"
+QT_MOC_LITERAL(8, 99, 5), // "setIt"
+QT_MOC_LITERAL(9, 105, 23), // "on_actionSave_triggered"
+QT_MOC_LITERAL(10, 129, 7), // "setInfo"
+QT_MOC_LITERAL(11, 137, 13), // "setClientInfo"
+QT_MOC_LITERAL(12, 151, 29), // "on_actionInitServer_triggered"
+QT_MOC_LITERAL(13, 181, 11), // "startListen"
+QT_MOC_LITERAL(14, 193, 34), // "on_actionConnectToServer_trig..."
+QT_MOC_LITERAL(15, 228, 10), // "stopListen"
+QT_MOC_LITERAL(16, 239, 26), // "on_actionNewGame_triggered"
+QT_MOC_LITERAL(17, 266, 5), // "minus"
+QT_MOC_LITERAL(18, 272, 4) // "LOSE"
 
     },
-    "MainWindow\0connectRecv\0\0loseSig\0"
+    "MainWindow\0connectRecv\0\0loseSig\0sendIP\0"
     "acceptNewConnection\0recvMessage\0"
     "on_actionReadFile_triggered\0setIt\0"
     "on_actionSave_triggered\0setInfo\0"
     "setClientInfo\0on_actionInitServer_triggered\0"
     "startListen\0on_actionConnectToServer_triggered\0"
     "stopListen\0on_actionNewGame_triggered\0"
-    "minus\0timerUp\0LOSE"
+    "minus\0LOSE"
 };
 #undef QT_MOC_LITERAL
 
@@ -75,32 +75,33 @@ static const uint qt_meta_data_MainWindow[] = {
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       2,       // signalCount
+       3,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
        1,    0,   99,    2, 0x06 /* Public */,
        3,    1,  100,    2, 0x06 /* Public */,
+       4,    1,  103,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       4,    0,  103,    2, 0x08 /* Private */,
-       5,    0,  104,    2, 0x08 /* Private */,
-       6,    0,  105,    2, 0x08 /* Private */,
-       7,    1,  106,    2, 0x08 /* Private */,
-       8,    0,  109,    2, 0x08 /* Private */,
-       9,    2,  110,    2, 0x08 /* Private */,
-      10,    2,  115,    2, 0x08 /* Private */,
-      11,    0,  120,    2, 0x08 /* Private */,
-      12,    0,  121,    2, 0x08 /* Private */,
-      13,    0,  122,    2, 0x08 /* Private */,
-      14,    0,  123,    2, 0x08 /* Private */,
-      15,    0,  124,    2, 0x08 /* Private */,
-      16,    0,  125,    2, 0x08 /* Private */,
-      17,    0,  126,    2, 0x08 /* Private */,
-      18,    1,  127,    2, 0x08 /* Private */,
+       5,    0,  106,    2, 0x08 /* Private */,
+       6,    0,  107,    2, 0x08 /* Private */,
+       7,    0,  108,    2, 0x08 /* Private */,
+       8,    1,  109,    2, 0x08 /* Private */,
+       9,    0,  112,    2, 0x08 /* Private */,
+      10,    2,  113,    2, 0x08 /* Private */,
+      11,    2,  118,    2, 0x08 /* Private */,
+      12,    0,  123,    2, 0x08 /* Private */,
+      13,    0,  124,    2, 0x08 /* Private */,
+      14,    0,  125,    2, 0x08 /* Private */,
+      15,    0,  126,    2, 0x08 /* Private */,
+      16,    0,  127,    2, 0x08 /* Private */,
+      17,    0,  128,    2, 0x08 /* Private */,
+      18,    1,  129,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void,
     QMetaType::Void, QMetaType::Bool,    2,
+    QMetaType::Void, QMetaType::QString,    2,
 
  // slots: parameters
     QMetaType::Void,
@@ -110,7 +111,6 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void, QMetaType::QString, QMetaType::QString,    2,    2,
     QMetaType::Void, QMetaType::QString, QMetaType::QString,    2,    2,
-    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -130,20 +130,20 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         switch (_id) {
         case 0: _t->connectRecv(); break;
         case 1: _t->loseSig((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 2: _t->acceptNewConnection(); break;
-        case 3: _t->recvMessage(); break;
-        case 4: _t->on_actionReadFile_triggered(); break;
-        case 5: _t->setIt((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 6: _t->on_actionSave_triggered(); break;
-        case 7: _t->setInfo((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
-        case 8: _t->setClientInfo((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
-        case 9: _t->on_actionInitServer_triggered(); break;
-        case 10: _t->startListen(); break;
-        case 11: _t->on_actionConnectToServer_triggered(); break;
-        case 12: _t->stopListen(); break;
-        case 13: _t->on_actionNewGame_triggered(); break;
-        case 14: _t->minus(); break;
-        case 15: _t->timerUp(); break;
+        case 2: _t->sendIP((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 3: _t->acceptNewConnection(); break;
+        case 4: _t->recvMessage(); break;
+        case 5: _t->on_actionReadFile_triggered(); break;
+        case 6: _t->setIt((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 7: _t->on_actionSave_triggered(); break;
+        case 8: _t->setInfo((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
+        case 9: _t->setClientInfo((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
+        case 10: _t->on_actionInitServer_triggered(); break;
+        case 11: _t->startListen(); break;
+        case 12: _t->on_actionConnectToServer_triggered(); break;
+        case 13: _t->stopListen(); break;
+        case 14: _t->on_actionNewGame_triggered(); break;
+        case 15: _t->minus(); break;
         case 16: _t->LOSE((*reinterpret_cast< bool(*)>(_a[1]))); break;
         default: ;
         }
@@ -160,6 +160,13 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
             using _t = void (MainWindow::*)(bool );
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&MainWindow::loseSig)) {
                 *result = 1;
+                return;
+            }
+        }
+        {
+            using _t = void (MainWindow::*)(QString );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&MainWindow::sendIP)) {
+                *result = 2;
                 return;
             }
         }
@@ -217,6 +224,13 @@ void MainWindow::loseSig(bool _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
+}
+
+// SIGNAL 2
+void MainWindow::sendIP(QString _t1)
+{
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

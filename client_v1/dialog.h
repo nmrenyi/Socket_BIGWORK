@@ -14,7 +14,7 @@ class Dialog : public QDialog
 public:
     explicit Dialog(QWidget *parent = nullptr);
     ~Dialog();
-
+    void closeEvent(QCloseEvent*);
     Ui::Dialog *ui;
 private slots:
     void on_buttonBox_accepted();

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>854</width>
-    <height>747</height>
+    <width>893</width>
+    <height>880</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,13 +37,26 @@
      <string/>
     </property>
    </widget>
+   <widget class="QLabel" name="Your">
+    <property name="geometry">
+     <rect>
+      <x>740</x>
+      <y>240</y>
+      <width>181</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Your Turn</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>854</width>
+     <width>893</width>
      <height>21</height>
     </rect>
    </property>
@@ -66,6 +79,8 @@
    <addaction name="actionNewGame"/>
    <addaction name="actionReadFile"/>
    <addaction name="actionSave"/>
+   <addaction name="actionInitServer"/>
+   <addaction name="actionConnectToServer"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionReadFile">
