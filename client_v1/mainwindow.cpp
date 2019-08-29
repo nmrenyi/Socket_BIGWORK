@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
     fileRead(false)
 {
     nowTime = timeLimit;
+    anotherTime = timeLimit;
     ui->setupUi(this);
     black_bishop.load(":/Pic/black_bishop.png");
     black_king.load(":/Pic/black_king.png");
@@ -46,14 +47,16 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, SIGNAL(loseSig(bool)), this, SLOT(LOSE(bool)));
     statusRead = false;
     ui->lcd->display(timeLimit);
+    ui->lcd_2->display(timeLimit);
     timer = new QTimer;
+    another = new QTimer;
+    connect(another, SIGNAL(timeout()), this, SLOT(anotherminus()));
     connect(timer, SIGNAL(timeout()), this, SLOT(minus()));
     alreadyConnected = false;
     ui->Your->setVisible(false);
 }
 
 void MainWindow::minus() {
-    qDebug() << "here minus";
     nowTime--;
     ui->lcd->display(nowTime);
     if (nowTime == 0) {
@@ -61,20 +64,28 @@ void MainWindow::minus() {
         timer->stop();
     }
 }
-
+void MainWindow::anotherminus() {
+    anotherTime--;
+    ui->lcd_2->display(anotherTime);
+    if (anotherTime == 0) {
+        emit(loseSig(!myID));
+        another->stop();
+    }
+}
 void MainWindow::LOSE(bool l) {
-    QByteArray* arr = new QByteArray;
-    arr->clear();
-    readWriteSocket->write(arr->data());
+//    QByteArray* arr = new QByteArray;
+//    arr->clear();
+//    readWriteSocket->write(arr->data());
     if (l){
-        arr->append("whitelose");
+//        arr->append("whitelose");
         QMessageBox::information(nullptr, "white lose, black win", "white lose, black win");
     }
     else {
-        arr->append("blacklose");
+//        arr->append("blacklose");
         QMessageBox::information(nullptr, "black lose, white win", "black lose, white win");
     }
     timer->stop();
+    another->stop();
 }
 
 
@@ -218,23 +229,26 @@ void MainWindow::readStatus(QString qs) {
         else if (s == "recvConnect")
         {
             alreadyConnected = true;
+            cdialog.accept();
             QMessageBox::information(nullptr, "success", "Successfully connected to server!");
         }
         else if (s == "newRound") {
+
+            another->start(1000);
             nowTime = timeLimit;
             board.initWithPiece();
         }
-        else if (s == "whitelose")
-        {
-            timer->stop();
-            QMessageBox::information(nullptr, "black win, white lose", "black win, white lose");
+//        else if (s == "whitelose")
+//        {
+//            timer->stop();
+//            QMessageBox::information(nullptr, "black win, white lose", "black win, white lose");
 
-        }
-        else if (s == "blacklose")
-        {
-            timer->stop();
-            QMessageBox::information(nullptr, "black win, white lose", "white win, black lose");
-        }
+//        }
+//        else if (s == "blacklose")
+//        {
+//            timer->stop();
+//            QMessageBox::information(nullptr, "black win, white lose", "white win, black lose");
+//        }
         else {
 //                qDebug() << s;
             std::string line = s.toStdString();
@@ -347,6 +361,8 @@ void MainWindow::mousePressEvent(QMouseEvent *e) {
                     sendStatus();
                     checkKing();
                     timer->stop();
+                    anotherTime = timeLimit;
+                    another->start(1000);
                     nowTime = timeLimit;
                     ui->lcd->display(timeLimit);
                 } else {
@@ -491,7 +507,8 @@ void MainWindow::recvMessage() {
     if (nowOn == myID && !timer->isActive())
     {
         timer->start(1000);
-//        qDebug() << "active? " << timer->isActive();
+        another->stop();
+        ui->lcd_2->display(timeLimit);
     }
     this->update();
 }
@@ -560,13 +577,10 @@ void MainWindow::on_actionConnectToServer_triggered()
 {
     myID = false;
     ui->label->setText("You're Black");
-    connectTo* dialog = new connectTo;
-
-    connect(dialog, SIGNAL(InfoChanged(QString, QString)), this, SLOT(setClientInfo(QString, QString)));
 
 
-
-    dialog->show();
+    connect(&cdialog, SIGNAL(InfoChanged(QString, QString)), this, SLOT(setClientInfo(QString, QString)));
+    cdialog.show();
 }
 void MainWindow::on_actionReadFile_triggered()
 {
@@ -579,6 +593,9 @@ void MainWindow::on_actionReadFile_triggered()
     board.initWithPiece();
     if (nowOn == myID)
         timer->start(1000);
+    else {
+        another->start(1000);
+    }
 //    nowOn = false;
 //    QString fileName = QFileDialog::getOpenFileName(NULL,"标题",".","*.txt");
     QFile file(":/sample_input.txt");
@@ -603,6 +620,9 @@ void MainWindow::on_actionNewGame_triggered() {
     board.initWithPiece();
     if (nowOn == myID)
         timer->start(1000);
+    else {
+        another->start(1000);
+    }
     QFile file(":/NewGame.txt");
     if (file.open(QFile::ReadOnly)) {
         readStatus(file);

@@ -35,6 +35,9 @@ public:
     QLCDNumber *lcd;
     QLabel *label;
     QLabel *Your;
+    QLabel *label_2;
+    QLCDNumber *lcd_2;
+    QLabel *label_3;
     QMenuBar *menuBar;
     QMenu *menuStart;
     QToolBar *mainToolBar;
@@ -62,10 +65,19 @@ public:
         lcd->setGeometry(QRect(740, 50, 101, 91));
         label = new QLabel(centralWidget);
         label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(740, 170, 81, 51));
+        label->setGeometry(QRect(740, 200, 81, 51));
         Your = new QLabel(centralWidget);
         Your->setObjectName(QString::fromUtf8("Your"));
-        Your->setGeometry(QRect(740, 240, 181, 81));
+        Your->setGeometry(QRect(740, 280, 181, 81));
+        label_2 = new QLabel(centralWidget);
+        label_2->setObjectName(QString::fromUtf8("label_2"));
+        label_2->setGeometry(QRect(740, 150, 141, 71));
+        lcd_2 = new QLCDNumber(centralWidget);
+        lcd_2->setObjectName(QString::fromUtf8("lcd_2"));
+        lcd_2->setGeometry(QRect(730, 440, 101, 91));
+        label_3 = new QLabel(centralWidget);
+        label_3->setObjectName(QString::fromUtf8("label_3"));
+        label_3->setGeometry(QRect(730, 580, 131, 81));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
@@ -107,6 +119,9 @@ public:
         actionNewGame->setText(QCoreApplication::translate("MainWindow", "NewGame", nullptr));
         label->setText(QString());
         Your->setText(QCoreApplication::translate("MainWindow", "Your Turn", nullptr));
+        label_2->setText(QCoreApplication::translate("MainWindow", "Your Time", nullptr));
+        label_3->setText(QCoreApplication::translate("MainWindow", "The Other\n"
+"   Time", nullptr));
         menuStart->setTitle(QCoreApplication::translate("MainWindow", "Start", nullptr));
     } // retranslateUi
 

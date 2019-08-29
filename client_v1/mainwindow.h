@@ -9,6 +9,7 @@
 #include <QTime>
 #include <piece.h>
 #include <board.h>
+#include "connectto.h"
 
 
 namespace Ui {
@@ -42,7 +43,7 @@ private slots:
     void stopListen();
     void on_actionNewGame_triggered();
     void minus();
-
+    void anotherminus();
     void LOSE(bool);
 
 private:
@@ -50,9 +51,12 @@ private:
     bool nowOn;
     bool statusRead;
     int nowTime;
+    int anotherTime;
     bool gameStart;
+    connectTo cdialog;
     const int timeLimit = 60;
     QTimer* timer;
+    QTimer* another;
     Ui::MainWindow *ui;
     QTcpServer* listenSocket;
     QTcpSocket* readWriteSocket;

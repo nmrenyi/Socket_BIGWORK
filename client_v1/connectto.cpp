@@ -53,7 +53,7 @@ void connectTo::on_buttonBox_accepted()
 
     emit(InfoChanged(hostIP, port));
     ui->connecting->setVisible(true);
-    this->accept();
+//    this->accept();
 }
 
 void connectTo::clientreceived() {
