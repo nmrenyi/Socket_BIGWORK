@@ -46,7 +46,12 @@ private slots:
     void anotherminus();
     void LOSE(bool);
 
+//    void on_actionpause_resume_triggered(bool checked);
+
+    void on_actionpause_resume_triggered();
+
 private:
+    bool pausing;
     bool myID;
     bool nowOn;
     bool statusRead;

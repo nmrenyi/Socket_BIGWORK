@@ -36,7 +36,7 @@ public:
     {
         if (Dialog->objectName().isEmpty())
             Dialog->setObjectName(QString::fromUtf8("Dialog"));
-        Dialog->resize(197, 286);
+        Dialog->resize(436, 411);
         verticalLayout_3 = new QVBoxLayout(Dialog);
         verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
         verticalLayout_2 = new QVBoxLayout();
@@ -47,6 +47,7 @@ public:
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         queen = new QRadioButton(groupBox);
         queen->setObjectName(QString::fromUtf8("queen"));
+        queen->setChecked(true);
 
         verticalLayout->addWidget(queen);
 
@@ -81,7 +82,6 @@ public:
 
         retranslateUi(Dialog);
         QObject::connect(buttonBox, SIGNAL(accepted()), Dialog, SLOT(accept()));
-        QObject::connect(buttonBox, SIGNAL(rejected()), Dialog, SLOT(reject()));
 
         QMetaObject::connectSlotsByName(Dialog);
     } // setupUi

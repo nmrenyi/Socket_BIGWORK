@@ -29,8 +29,8 @@
      <rect>
       <x>740</x>
       <y>200</y>
-      <width>81</width>
-      <height>51</height>
+      <width>161</width>
+      <height>101</height>
      </rect>
     </property>
     <property name="text">
@@ -97,14 +97,6 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuStart">
-    <property name="title">
-     <string>Start</string>
-    </property>
-    <addaction name="actionInitServer"/>
-    <addaction name="actionConnectToServer"/>
-   </widget>
-   <addaction name="menuStart"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -118,6 +110,7 @@
    <addaction name="actionSave"/>
    <addaction name="actionInitServer"/>
    <addaction name="actionConnectToServer"/>
+   <addaction name="actionpause_resume"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionReadFile">
@@ -146,6 +139,11 @@
   <action name="actionNewGame">
    <property name="text">
     <string>NewGame</string>
+   </property>
+  </action>
+  <action name="actionpause_resume">
+   <property name="text">
+    <string>pause/resume</string>
    </property>
   </action>
  </widget>

@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     fileRead(false)
 {
+    pausing = false;
     nowTime = timeLimit;
     anotherTime = timeLimit;
     ui->setupUi(this);
@@ -212,59 +213,64 @@ void MainWindow::paintEvent(QPaintEvent * e) {
 }
 
 void MainWindow::readStatus(QString qs) {
-    QTextStream in (&qs);
-//        qDebug() << in.readAll();
-    bool white = true;
-//    bool fisrtLine = true;
-    while(!in.atEnd()) {
-        QString s = in.readLine();
-        if (s == "black")
-            white = false;
-        else if (s == "white")
-            white = true;
-        else if (s == "true")
-            nowOn = true;
-        else if (s == "false")
-            nowOn = false;
-        else if (s == "recvConnect")
-        {
-            alreadyConnected = true;
-            cdialog.accept();
-            QMessageBox::information(nullptr, "success", "Successfully connected to server!");
-        }
-        else if (s == "newRound") {
 
-            another->start(1000);
-            nowTime = timeLimit;
-            board.initWithPiece();
-        }
-//        else if (s == "whitelose")
-//        {
-//            timer->stop();
-//            QMessageBox::information(nullptr, "black win, white lose", "black win, white lose");
-
-//        }
-//        else if (s == "blacklose")
-//        {
-//            timer->stop();
-//            QMessageBox::information(nullptr, "black win, white lose", "white win, black lose");
-//        }
-        else {
-//                qDebug() << s;
-            std::string line = s.toStdString();
-            std::stringstream ss;
-            std::string name;
-            std::string num;
-            ss << line;
-            ss >> name;
-            ss >> num;
-            int number = std::stoi(num);
-            for (int i = 0; i < number; i++) {
-                std::string tmp;
-                ss >> tmp;
-//                    qDebug() << int(tmp[0] - 65) << " " << int(tmp[1]);
-                board.setPiece(name, white, int(tmp[0] - 96), int(tmp[1] - 48));
+    if (qs == "NowStop")
+    {
+        timer->stop();
+        pausing = true;
+    }
+    else if (qs == "NowStart") {
+        timer->start(1000);
+        pausing = false;
+    }
+    else
+    {
+        resetWithPiece();
+        QTextStream in (&qs);
+        //        qDebug() << in.readAll();
+        bool white = true;
+        //    bool fisrtLine = true;
+        while(!in.atEnd()) {
+            QString s = in.readLine();
+            if (s == "black")
+                white = false;
+            else if (s == "white")
+                white = true;
+            else if (s == "true")
+                nowOn = true;
+            else if (s == "false")
+                nowOn = false;
+            else if (s == "recvConnect")
+            {
+                alreadyConnected = true;
+                cdialog.accept();
+                QMessageBox::information(nullptr, "success", "Successfully connected to server!");
             }
+            else if (s == "newRound") {
+
+                another->start(1000);
+                nowTime = timeLimit;
+                board.initWithPiece();
+            }
+
+            else {
+                //                qDebug() << s;
+                std::string line = s.toStdString();
+                std::stringstream ss;
+                std::string name;
+                std::string num;
+                ss << line;
+                ss >> name;
+                ss >> num;
+                int number = std::stoi(num);
+                for (int i = 0; i < number; i++) {
+                    std::string tmp;
+                    ss >> tmp;
+                    //                    qDebug() << int(tmp[0] - 65) << " " << int(tmp[1]);
+                    board.setPiece(name, white, int(tmp[0] - 96), int(tmp[1] - 48));
+                }
+            }
+
         }
     }
 }
@@ -330,6 +336,7 @@ void MainWindow::mousePressEvent(QMouseEvent *e) {
 //    qDebug() << "in event choice = " << choice;
 //    qDebug() << "your name please" << QString::fromStdString(board.status[6][1].name);
     if (e->button() == Qt::LeftButton) {
+        if (!pausing)
         if (nowOn == myID)
         {
             int x = (e->y() - starty ) / interval;
@@ -501,12 +508,13 @@ void MainWindow::recvMessage() {
     QString info;
     info.clear();
     info += readWriteSocket->readAll();
-    resetWithPiece();
+//    resetWithPiece();
     readStatus(info);
     qDebug() << "in my turn = " << (nowOn == myID) << " active = " << timer->isActive();
     if (nowOn == myID && !timer->isActive())
     {
-        timer->start(1000);
+        if (!pausing)
+            timer->start(1000);
         another->stop();
         ui->lcd_2->display(timeLimit);
     }
@@ -635,4 +643,50 @@ void MainWindow::on_actionNewGame_triggered() {
 }
 
 
+//void MainWindow::on_actionpause_resume_triggered(bool checked)
+//{
+////    QByteArray* arr = new QByteArray;
+////    arr->clear();
+////    readWriteSocket->write(arr->data());
+//    if (checked) {
+//        if (nowOn == myID) {
+//            timer->stop();
+//            readWriteSocket->write("NowStop");
+//        } else {
+//            another->stop();
+//            readWriteSocket->write("AnotherStop");
+//        }
+//    } else {
+//        if (nowOn == myID) {
+//            timer->start(1000);
+//            readWriteSocket->write("NowStart");
+//        } else {
+//            another->start(1000);
+//            readWriteSocket->write("AnotherStart");
+//        }
+//    }
+//}
 
+void MainWindow::on_actionpause_resume_triggered()
+{
+    if (!alreadyConnected) {
+        QMessageBox::information(nullptr, "Warning", "Please get connected first");
+        return;
+    }
+    if (nowOn == myID) {
+        QMessageBox::information(nullptr, "no access", "no access");
+    }
+    pausing ^= 1;
+    bool checked = pausing;
+    if (checked) {
+        if (nowOn != myID) {
+            another->stop();
+            readWriteSocket->write("NowStop");
+        }
+    } else {
+        if (nowOn != myID) {
+            another->start(1000);
+            readWriteSocket->write("NowStart");
+        }
+    }
+}

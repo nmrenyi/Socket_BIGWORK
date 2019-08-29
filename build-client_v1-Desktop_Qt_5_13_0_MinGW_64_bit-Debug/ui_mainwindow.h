@@ -15,7 +15,6 @@
 #include <QtWidgets/QLCDNumber>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
@@ -31,6 +30,7 @@ public:
     QAction *actionInitServer;
     QAction *actionConnectToServer;
     QAction *actionNewGame;
+    QAction *actionpause_resume;
     QWidget *centralWidget;
     QLCDNumber *lcd;
     QLabel *label;
@@ -39,7 +39,6 @@ public:
     QLCDNumber *lcd_2;
     QLabel *label_3;
     QMenuBar *menuBar;
-    QMenu *menuStart;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
@@ -58,6 +57,8 @@ public:
         actionConnectToServer->setObjectName(QString::fromUtf8("actionConnectToServer"));
         actionNewGame = new QAction(MainWindow);
         actionNewGame->setObjectName(QString::fromUtf8("actionNewGame"));
+        actionpause_resume = new QAction(MainWindow);
+        actionpause_resume->setObjectName(QString::fromUtf8("actionpause_resume"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         lcd = new QLCDNumber(centralWidget);
@@ -65,7 +66,7 @@ public:
         lcd->setGeometry(QRect(740, 50, 101, 91));
         label = new QLabel(centralWidget);
         label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(740, 200, 81, 51));
+        label->setGeometry(QRect(740, 200, 161, 101));
         Your = new QLabel(centralWidget);
         Your->setObjectName(QString::fromUtf8("Your"));
         Your->setGeometry(QRect(740, 280, 181, 81));
@@ -82,8 +83,6 @@ public:
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 893, 21));
-        menuStart = new QMenu(menuBar);
-        menuStart->setObjectName(QString::fromUtf8("menuStart"));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -92,14 +91,12 @@ public:
         statusBar->setObjectName(QString::fromUtf8("statusBar"));
         MainWindow->setStatusBar(statusBar);
 
-        menuBar->addAction(menuStart->menuAction());
-        menuStart->addAction(actionInitServer);
-        menuStart->addAction(actionConnectToServer);
         mainToolBar->addAction(actionNewGame);
         mainToolBar->addAction(actionReadFile);
         mainToolBar->addAction(actionSave);
         mainToolBar->addAction(actionInitServer);
         mainToolBar->addAction(actionConnectToServer);
+        mainToolBar->addAction(actionpause_resume);
 
         retranslateUi(MainWindow);
 
@@ -117,12 +114,12 @@ public:
         actionInitServer->setText(QCoreApplication::translate("MainWindow", "InitServer", nullptr));
         actionConnectToServer->setText(QCoreApplication::translate("MainWindow", "ConnectToServer", nullptr));
         actionNewGame->setText(QCoreApplication::translate("MainWindow", "NewGame", nullptr));
+        actionpause_resume->setText(QCoreApplication::translate("MainWindow", "pause/resume", nullptr));
         label->setText(QString());
         Your->setText(QCoreApplication::translate("MainWindow", "Your Turn", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "Your Time", nullptr));
         label_3->setText(QCoreApplication::translate("MainWindow", "The Other\n"
 "   Time", nullptr));
-        menuStart->setTitle(QCoreApplication::translate("MainWindow", "Start", nullptr));
     } // retranslateUi
 
 };
