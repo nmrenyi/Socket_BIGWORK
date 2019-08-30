@@ -50,7 +50,10 @@ private slots:
 
     void on_actionpause_resume_triggered();
 
+    void on_actionSurrender_triggered();
+
 private:
+    bool inPlaying;
     bool pausing;
     bool myID;
     bool nowOn;

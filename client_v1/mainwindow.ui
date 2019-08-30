@@ -66,7 +66,7 @@
    <widget class="QLCDNumber" name="lcd_2">
     <property name="geometry">
      <rect>
-      <x>730</x>
+      <x>740</x>
       <y>440</y>
       <width>101</width>
       <height>91</height>
@@ -111,6 +111,7 @@
    <addaction name="actionInitServer"/>
    <addaction name="actionConnectToServer"/>
    <addaction name="actionpause_resume"/>
+   <addaction name="actionSurrender"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionReadFile">
@@ -144,6 +145,11 @@
   <action name="actionpause_resume">
    <property name="text">
     <string>pause/resume</string>
+   </property>
+  </action>
+  <action name="actionSurrender">
+   <property name="text">
+    <string>Surrender</string>
    </property>
   </action>
  </widget>

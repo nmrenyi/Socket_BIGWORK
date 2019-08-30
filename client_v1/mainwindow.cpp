@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     fileRead(false)
 {
+    inPlaying = false;
     pausing = false;
     nowTime = timeLimit;
     anotherTime = timeLimit;
@@ -65,6 +66,7 @@ void MainWindow::minus() {
         timer->stop();
     }
 }
+
 void MainWindow::anotherminus() {
     anotherTime--;
     ui->lcd_2->display(anotherTime);
@@ -73,10 +75,16 @@ void MainWindow::anotherminus() {
         another->stop();
     }
 }
+
 void MainWindow::LOSE(bool l) {
 //    QByteArray* arr = new QByteArray;
 //    arr->clear();
 //    readWriteSocket->write(arr->data());
+    timer->stop();
+    another->stop();
+    nowTime = timeLimit;
+    anotherTime = timeLimit;
+    inPlaying = false;
     if (l){
 //        arr->append("whitelose");
         QMessageBox::information(nullptr, "white lose, black win", "white lose, black win");
@@ -85,8 +93,7 @@ void MainWindow::LOSE(bool l) {
 //        arr->append("blacklose");
         QMessageBox::information(nullptr, "black lose, white win", "black lose, white win");
     }
-    timer->stop();
-    another->stop();
+
 }
 
 
@@ -223,6 +230,19 @@ void MainWindow::readStatus(QString qs) {
         timer->start(1000);
         pausing = false;
     }
+    else if (qs == "Surrender") {
+        emit loseSig(!myID);
+    }
+//    else if (qs == "blacklose") {
+//        QMessageBox::information(nullptr, "black lose", "white win, black lose");
+//        timer->stop();
+//        another->stop();
+//    }
+//    else if (qs == "whitelose") {
+//        QMessageBox::information(nullptr, "white lose", "black win, white lose");
+//        timer->stop();
+//        another->stop();
+//    }
     else
     {
         resetWithPiece();
@@ -234,6 +254,12 @@ void MainWindow::readStatus(QString qs) {
             QString s = in.readLine();
             if (s == "black")
                 white = false;
+            else if (s == "newRound") {
+                inPlaying = true;
+                another->start(1000);
+                nowTime = timeLimit;
+                board.initWithPiece();
+            }
             else if (s == "white")
                 white = true;
             else if (s == "true")
@@ -246,14 +272,13 @@ void MainWindow::readStatus(QString qs) {
                 cdialog.accept();
                 QMessageBox::information(nullptr, "success", "Successfully connected to server!");
             }
-            else if (s == "newRound") {
-
-                another->start(1000);
-                nowTime = timeLimit;
-                board.initWithPiece();
-            }
-
             else {
+//                if (s == "newRound") {
+//                    inPlaying = true;
+//                    another->start(1000);
+//                    nowTime = timeLimit;
+//                    board.initWithPiece();
+//                }
                 //                qDebug() << s;
                 std::string line = s.toStdString();
                 std::stringstream ss;
@@ -366,10 +391,10 @@ void MainWindow::mousePressEvent(QMouseEvent *e) {
                     this->update();
                     nowOn ^= 1;
                     sendStatus();
+                    another->start(1000);
                     checkKing();
                     timer->stop();
                     anotherTime = timeLimit;
-                    another->start(1000);
                     nowTime = timeLimit;
                     ui->lcd->display(timeLimit);
                 } else {
@@ -406,13 +431,20 @@ void MainWindow::checkKing() {
     }
 
     if (!blackKing) {
-        QMessageBox::information(nullptr, "white win, black lose", "white win, black lose");
+//        QMessageBox::information(nullptr, "white win, black lose", "white win, black lose");
+//        readWriteSocket->write("blacklose");
         emit(loseSig(false));
+        timer->stop();
+        another->stop();
     }
     if (!whiteKing) {
-        QMessageBox::information(nullptr, "black win, white lose", "black win, white lose");
+//        QMessageBox::information(nullptr, "black win, white lose", "black win, white lose");
+//        readWriteSocket->write("whitelose");
         emit(loseSig(true));
+        timer->stop();
+        another->stop();
     }
+
 }
 
 void MainWindow::sendStatus() {
@@ -518,7 +550,11 @@ void MainWindow::recvMessage() {
         another->stop();
         ui->lcd_2->display(timeLimit);
     }
+
     this->update();
+    if (timer->isActive())
+        checkKing();
+
 }
 
 void MainWindow::on_actionSave_triggered()
@@ -597,17 +633,19 @@ void MainWindow::on_actionReadFile_triggered()
         return;
     }
     nowTime = timeLimit;
-    readWriteSocket->write("newRound\n");
-    board.initWithPiece();
+    anotherTime = timeLimit;
+    inPlaying = true;
+//    nowOn = false;
+    QString fileName = QFileDialog::getOpenFileName(nullptr,"readfile",".","*.txt");
+//    QFile file(":/sample_input.txt");
+    QFile file(fileName);
     if (nowOn == myID)
         timer->start(1000);
     else {
         another->start(1000);
     }
-//    nowOn = false;
-//    QString fileName = QFileDialog::getOpenFileName(NULL,"标题",".","*.txt");
-    QFile file(":/sample_input.txt");
-//    QFile file(fileName);
+    readWriteSocket->write("newRound\n");
+    board.initWithPiece();
     if (file.open(QFile::ReadOnly)) {
         readStatus(file);
         fileRead = true;
@@ -624,6 +662,7 @@ void MainWindow::on_actionNewGame_triggered() {
         return;
     }
     nowTime = timeLimit;
+    inPlaying = true;
     readWriteSocket->write("newRound\n");
     board.initWithPiece();
     if (nowOn == myID)
@@ -642,30 +681,6 @@ void MainWindow::on_actionNewGame_triggered() {
     }
 }
 
-
-//void MainWindow::on_actionpause_resume_triggered(bool checked)
-//{
-////    QByteArray* arr = new QByteArray;
-////    arr->clear();
-////    readWriteSocket->write(arr->data());
-//    if (checked) {
-//        if (nowOn == myID) {
-//            timer->stop();
-//            readWriteSocket->write("NowStop");
-//        } else {
-//            another->stop();
-//            readWriteSocket->write("AnotherStop");
-//        }
-//    } else {
-//        if (nowOn == myID) {
-//            timer->start(1000);
-//            readWriteSocket->write("NowStart");
-//        } else {
-//            another->start(1000);
-//            readWriteSocket->write("AnotherStart");
-//        }
-//    }
-//}
 
 void MainWindow::on_actionpause_resume_triggered()
 {
@@ -689,4 +704,14 @@ void MainWindow::on_actionpause_resume_triggered()
             readWriteSocket->write("NowStart");
         }
     }
+}
+
+void MainWindow::on_actionSurrender_triggered()
+{
+    if (!alreadyConnected) {
+        QMessageBox::information(nullptr, "Warning", "Please get connected first");
+        return;
+    }
+    readWriteSocket->write("Surrender");
+    emit loseSig(myID);
 }
